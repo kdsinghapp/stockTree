@@ -110,3 +110,9 @@ exports.updatePassword = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.tempHello = async (req, res) => {
+  res.json({ message: 'Hello' });
+};
+
+

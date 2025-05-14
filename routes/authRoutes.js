@@ -8,5 +8,6 @@ router.post('/login', authController.login);
 router.post('/forgot-password', authController.forgotPassword);
 router.post('/verify-otp', authController.verifyOTP);
 router.post('/update-password', authController.updatePassword);
+router.get('/temp-hello', authController.tempHello);
 
 module.exports = router;
