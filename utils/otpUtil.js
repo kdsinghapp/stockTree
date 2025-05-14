@@ -1,0 +1,1 @@
+exports.generateOTP = () => '9999'; // static OTP for simplicity
