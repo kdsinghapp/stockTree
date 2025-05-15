@@ -21,7 +21,10 @@ exports.signup = async (req, res) => {
       isVerified: false,
     });
 
-    res.status(201).json({ message: 'User created. OTP sent.', userId: user._id, otp }); // Include static OTP for testing
+    res.status(201).json({
+      status: 'true',
+      message: 'User created. OTP sent.', userId: user._id, otp
+    }); // Include static OTP for testing
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -40,7 +43,7 @@ exports.verifySignupOTP = async (req, res) => {
     user.isVerified = true;
     await user.save();
 
-    res.json({ message: 'OTP verified. Account activated.' });
+    res.status(200).json({ message: 'OTP verified. Account activated.' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -57,7 +60,10 @@ exports.login = async (req, res) => {
       return res.status(403).json({ message: 'Account not verified' });
     }
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
-    res.json({ message: 'Login successful', token });
+    res.status(200).json({
+      status: 'true',
+      message: 'Login successful', token
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -67,12 +73,18 @@ exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) return res.status(404).json({
+      status: 'false',
+      message: 'User not found'
+    });
 
     user.otp = generateOTP();
     await user.save();
 
-    res.json({ message: 'OTP sent to email (static: 9999)', otp: user.otp }); // Include OTP for testing
+    res.status(200).json({
+      status: 'true',
+      message: 'OTP sent to email (static: 9999)', otp: user.otp
+    }); // Include OTP for testing
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -89,7 +101,10 @@ exports.verifyOTP = async (req, res) => {
     user.otp = null;
     await user.save();
 
-    res.json({ message: 'OTP verified. You can now reset your password.' });
+    res.status(200).json({
+      status: 'true',
+      message: 'OTP verified. You can now reset your password.'
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -105,14 +120,19 @@ exports.updatePassword = async (req, res) => {
     user.password = hashedPassword;
     await user.save();
 
-    res.json({ message: 'Password updated successfully.' });
+    res.status(200).json({
+      status: 'true',
+      message: 'Password updated successfully.' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
 exports.tempHello = async (req, res) => {
-  res.json({ message: 'Hello' });
+  res.status(200).json({
+    status: 'true',
+    message: 'Hello'
+  });
 };
 
 
