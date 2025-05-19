@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const traderRoutes = require('./routes/traderRoutes');
+const user =require('./routes/user')
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -12,4 +13,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/traders', traderRoutes);
+app.use('/user',user)
+
 module.exports = app;

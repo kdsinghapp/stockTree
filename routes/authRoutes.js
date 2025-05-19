@@ -8,7 +8,7 @@ router.post('/verify-otp', authController.verifyOTP);
 router.post('/login', authController.login);
 router.post('/forgot-password', authController.forgotPassword);
 router.post('/update-password', authController.updatePassword);
-
+router.put('/update-profile/:id', authController.updateProfile);
 router.get('/temp-hello', authController.tempHello);
 
 

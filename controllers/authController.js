@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
     if (!user.isVerified) {
       return res.status(403).json({ message: 'Account not verified' });
     }
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || 'supersecret');
     res.status(200).json({
       status: 'true',
       message: 'Login successful', token
@@ -127,6 +127,35 @@ exports.updatePassword = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  const { id } = req.params;
+  const { fullName, nickname, dateOfBirth, phone, gender, profileImage } = req.body;
+
+  try {
+    const user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.fullName = fullName || user.fullName;
+    user.nickname = nickname || user.nickname;
+    user.dateOfBirth = dateOfBirth || user.dateOfBirth;
+    user.phone = phone || user.phone;
+    user.gender = gender || user.gender;
+    user.profileImage = profileImage || user.profileImage;
+
+    await user.save();
+
+    res.status(200).json({
+      status: 'true',
+      message: 'Profile updated successfully.',
+      user
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 
 exports.tempHello = async (req, res) => {
   res.status(200).json({
