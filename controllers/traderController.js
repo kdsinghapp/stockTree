@@ -3,7 +3,14 @@ const Trader = require('../models/Trader');
 // ➕ Create a new trader
 exports.createTrader = async (req, res) => {
   try {
-    const trader = await Trader.create(req.body);
+const portfolioImages = req.files?.map(file => file.path.replace(/\\/g, '/')) || [];
+
+    // Create trader with portfolio
+    const trader = await Trader.create({
+      ...req.body,
+      portfolio: portfolioImages
+    });  
+    
     res.status(201).json({
       status: 'success',
       message: 'Trader created successfully',

@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   dateOfBirth: { type: Date },
   phone: { type: String },
   gender: { type: String, enum: ['Male', 'Female', 'Other'] },
-  profileImage: { type: String , default: '' }, // base64 or URL
+  profileImage: { type: String ,default:""},
   membershipTier: { type: String, enum: ['basic', 'premium', 'vip'], required: true },
   otp: { type: String },
   isVerified: { type: Boolean, default: false },

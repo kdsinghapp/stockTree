@@ -59,13 +59,13 @@ exports.login = async (req, res) => {
     if (!user.isVerified) {
       return res.status(403).json({ message: 'Account not verified' });
     }
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '365d' } // 1 year expiration
-    );
+const token = jwt.sign(
+  { userId: user._id },
+  process.env.JWT_SECRET,
+  { expiresIn: '365d' } // 1 year expiration
+);
 
-    res.status(200).json({
+res.status(200).json({
       status: 'true',
       message: 'Login successful', token
     });
@@ -127,8 +127,7 @@ exports.updatePassword = async (req, res) => {
 
     res.status(200).json({
       status: 'true',
-      message: 'Password updated successfully.'
-    });
+      message: 'Password updated successfully.' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -35,6 +35,10 @@ const traderSchema = new mongoose.Schema({
   bio: {
     type: String,
     required: true
+  },
+   portfolio: {
+    type: [String],
+    required: false
   }
 }, { timestamps: true });
 

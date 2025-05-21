@@ -3,6 +3,9 @@ const mongoose = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const traderRoutes = require('./routes/traderRoutes');
 const user =require('./routes/user')
+const stockRoutes = require("./routes/stockRoutes")
+const indexRoutes = require('./routes/indexRoutes')
+const bannerRoutes = require('./routes/bannerRoutes');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -14,5 +17,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/traders', traderRoutes);
 app.use('/user',user)
+
+app.use('/api/stocks', stockRoutes);
+app.use('/api/indices', indexRoutes);
+app.use('/api/banners', bannerRoutes);
+
 
 module.exports = app;
