@@ -10,8 +10,7 @@ router.post('/forgot-password', authController.forgotPassword);
 router.post('/update-password', authController.updatePassword);
 router.put('/update-profile/:id', authController.updateProfile);
 router.get('/temp-hello', authController.tempHello);
-
-
+// router.get('/users', authController.getAllUsers);
 
 
 

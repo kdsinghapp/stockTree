@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   membershipTier: { type: String, enum: ['basic', 'premium', 'vip'], required: true },
   otp: { type: String },
   isVerified: { type: Boolean, default: false },
+  deviceToken: { type: String },
 });
 
 module.exports = mongoose.model('User', userSchema);
