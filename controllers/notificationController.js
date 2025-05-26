@@ -41,3 +41,4 @@ exports.sendNotificationToAllUsers = async (req, res) => {
     res.status(500).json({ success: false, message: 'Failed to send notifications', error: error.message });
   }
 };
+// 
