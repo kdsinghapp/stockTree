@@ -7,6 +7,7 @@ const stockRoutes = require("./routes/stockRoutes")
 const indexRoutes = require('./routes/indexRoutes')
 const bannerRoutes = require('./routes/bannerRoutes');
 const bodyParser = require('body-parser');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/user',user)
 app.use('/api/stocks', stockRoutes);
 app.use('/api/indices', indexRoutes);
 app.use('/api/banners', bannerRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 
 module.exports = app;

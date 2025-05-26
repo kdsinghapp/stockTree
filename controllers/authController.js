@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 const { generateOTP } = require('../utils/otpUtil');
 
 exports.signup = async (req, res) => {
-  const { email, password, fullName, membershipTier, deviceToken } = req.body;
+  const { email, password, fullName, membershipTier } = req.body;
+  // const { email, password, fullName, membershipTier, deviceToken } = req.body;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: 'Email already registered' });
@@ -19,7 +20,7 @@ exports.signup = async (req, res) => {
       membershipTier,
       otp,
       isVerified: false,
-      deviceToken
+      // deviceToken
     });
 
     res.status(201).json({
@@ -51,7 +52,7 @@ exports.verifySignupOTP = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, deviceToken } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -60,13 +61,18 @@ exports.login = async (req, res) => {
     if (!user.isVerified) {
       return res.status(403).json({ message: 'Account not verified' });
     }
-const token = jwt.sign(
-  { userId: user._id },
-  process.env.JWT_SECRET,
-  { expiresIn: '365d' } // 1 year expiration
-);
+    if (deviceToken) {
+      user.deviceToken = deviceToken;
+      await user.save();
+    }
 
-res.status(200).json({
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '365d' } // 1 year expiration
+    );
+
+    res.status(200).json({
       status: 'true',
       message: 'Login successful', token
     });
@@ -128,7 +134,8 @@ exports.updatePassword = async (req, res) => {
 
     res.status(200).json({
       status: 'true',
-      message: 'Password updated successfully.' });
+      message: 'Password updated successfully.'
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
