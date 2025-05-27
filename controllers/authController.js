@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { generateOTP } = require('../utils/otpUtil');
 
 exports.signup = async (req, res) => {
-  const { email, password, fullName, membershipTier } = req.body;
+  const { email, password, fullName, membershipTier, phone } = req.body;
   // const { email, password, fullName, membershipTier, deviceToken } = req.body;
   try {
     const existingUser = await User.findOne({ email });
@@ -19,6 +19,7 @@ exports.signup = async (req, res) => {
       fullName,
       membershipTier,
       otp,
+      phone,
       isVerified: false,
       // deviceToken
     });
