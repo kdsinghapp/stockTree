@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
       user.deviceToken = deviceToken;
       await user.save();
     }
-
+// 
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
