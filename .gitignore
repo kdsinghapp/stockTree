@@ -1,0 +1,29 @@
+# Node.js dependencies
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# # dotenv environment files
+# .env
+# .env.*
+
+# OS system files
+.DS_Store
+Thumbs.db
+
+# Optional: if you're using coverage tools like nyc or Jest
+coverage/
+
+# Optional: if you're using build tools
+dist/
+build/
+
+# Optional: if you're using TypeScript
+*.tsbuildinfo
+
+# IDEs
+.vscode/
+.idea/
