@@ -1,4 +1,5 @@
 const Banner = require('../models/Banner');
+const baseImgUrl = process.env.BASE_IMG_URL
 
 exports.createBanner = async (req, res) => {
   try {
@@ -20,6 +21,12 @@ exports.createBanner = async (req, res) => {
 exports.getBanners = async (req, res) => {
   try {
     const banners = await Banner.find({ status: 'active' });
+
+    banners.map((img) => {
+      // img.image? img.image = `${baseImgUrl}/${img.image}` : null
+      img.image = `${baseImgUrl}/${img.image}`
+      console.log(img.image)
+    })
     res.status(200).json({
       status: true,
       data: banners
