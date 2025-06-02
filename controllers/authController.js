@@ -1,48 +1,53 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { generateOTP } = require('../utils/otpUtil');
+const { sendOTP, verifyOTP } = require("../utils/twilioUtil");
 
 exports.signup = async (req, res) => {
-  const { email, password, fullName, membershipTier, phone } = req.body;
-  // const { email, password, fullName, membershipTier, deviceToken } = req.body;
+  let { email, password, fullName, membershipTier, phone } = req.body;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: 'Email already registered' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const otp = generateOTP();
+
+    // Normalize phone number (assumes India, modify if needed)
+    phone = phone.startsWith('+') ? phone : `+91${phone}`;
 
     const user = await User.create({
       email,
       password: hashedPassword,
       fullName,
       membershipTier,
-      otp,
       phone,
-      isVerified: false,
-      // deviceToken
+      isVerified: false
     });
 
+    await sendOTP(phone); // now always E.164
     res.status(201).json({
-      status: 'true',
-      message: 'User created. OTP sent.', userId: user._id, otp
-    }); // Include static OTP for testing
+      status: true,
+      message: 'User created. OTP sent to phone.',
+      userId: user._id
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+
 // 
 exports.verifySignupOTP = async (req, res) => {
-  const { email, otp } = req.body;
+  const { email, code } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: 'User not found' });
     if (user.isVerified) return res.status(400).json({ message: 'User already verified' });
 
-    if (user.otp !== otp) return res.status(400).json({ message: 'Invalid OTP' });
+    const verificationResult = await verifyOTP(user.phone, code);
+    if (verificationResult.status !== 'approved') {
+      return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
 
-    user.otp = null;
     user.isVerified = true;
     await user.save();
 
@@ -51,6 +56,7 @@ exports.verifySignupOTP = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 exports.login = async (req, res) => {
   const { email, password, deviceToken } = req.body;
@@ -66,7 +72,7 @@ exports.login = async (req, res) => {
       user.deviceToken = deviceToken;
       await user.save();
     }
-// 
+    // 
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
