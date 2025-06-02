@@ -1,29 +1,23 @@
-# Node.js dependencies
-node_modules/
-
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# # dotenv environment files
-# .env
-# .env.*
-
-# OS system files
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+ 
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+ 
+# testing
+/coverage
+ 
+# production
+/build
+ 
+# misc
 .DS_Store
-Thumbs.db
-
-# Optional: if you're using coverage tools like nyc or Jest
-coverage/
-
-# Optional: if you're using build tools
-dist/
-build/
-
-# Optional: if you're using TypeScript
-*.tsbuildinfo
-
-# IDEs
-.vscode/
-.idea/
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+ 
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
