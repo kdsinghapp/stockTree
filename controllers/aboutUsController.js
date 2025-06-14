@@ -3,7 +3,7 @@ const AboutUs = require("../models/AboutUs");
 // GET: Get latest About Us info
 exports.getAboutUs = async (req, res) => {
   try {
-    const data = await AboutUs.findOne().sort({ updatedAt: -1 });
+    const data = await AboutUs.find().sort({ updatedAt: -1 });
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ message: "Error fetching About Us info", error });

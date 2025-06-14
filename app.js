@@ -14,6 +14,7 @@ const insightsRoutes = require('./routes/insightsRoutes');
 // const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const aboutUsRoutes = require('./routes/aboutUsRoutes');
 const supportRoutes = require('./routes/supportRoutes');
+const notificationSettingRoutes = require('./routes/notificationsRoutes');
 const app = express();
 
 app.use(express.json());
@@ -33,6 +34,7 @@ app.use('/api/metrics', metricsRoutes);
 app.use('/api/insights', insightsRoutes);
 app.use("/api/aboutus", aboutUsRoutes);
 app.use("/api/support", supportRoutes);
+app.use('/api/notification-settings', notificationSettingRoutes);
 // app.use('/api/subscriptions', subscriptionRoutes);
 
 
