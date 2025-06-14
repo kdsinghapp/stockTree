@@ -18,3 +18,18 @@ exports.createSupportRequest = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+exports.getAllSupportQueries = async (req, res) => {
+  try {
+    const supportQueries = await Support.find().sort({ createdAt: -1 }); // newest first
+    res.status(200).json({
+      success: true,
+      data: supportQueries,
+    });
+  } catch (error) {
+    console.error("Error fetching support queries:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve support queries",
+    });
+  }
+};
